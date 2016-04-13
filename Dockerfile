@@ -20,22 +20,21 @@ RUN apt-get install -y \
     && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
     && docker-php-ext-install -j$(nproc) gd
 
-RUN apt-get -y install git vim gcc
+RUN apt-get -y install git vim gcc zip unzip
 
-RUN apt-get -y install zip unzip
-
-WORKDIR /tmp
 RUN apt-get install -y libmemcached-dev libmemcached11 \
-    && git clone https://github.com/php-memcached-dev/php-memcached
-WORKDIR /tmp/php-memcached
-RUN git checkout -b php7 origin/php7 \
-    && /usr/bin/phpize \
+    && cd /tmp \
+    && git clone https://github.com/php-memcached-dev/php-memcached \
+    && cd php-memcached \
+    && git checkout -b php7 origin/php7 \
+    && phpize \
     && ./configure \
     && make \
     && make install \
     && docker-php-ext-enable memcached
 
-RUN docker-php-ext-install xmlrpc
+RUN apt-get install -y libxml2-dev \
+    && docker-php-ext-install xmlrpc
 
 ENV PHPREDIS_VERSION=2.2.7
 RUN cd /usr/src/php/ext \
