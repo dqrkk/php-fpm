@@ -1,5 +1,5 @@
 # php-fpm
-Dockerfile to build PHP-FPM docker image which supports:
+Dockerfile to build PHP-FPM (php5 & php7) docker image which supports:
 - iconv
 - mcrypt
 - gd
