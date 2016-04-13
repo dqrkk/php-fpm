@@ -38,12 +38,10 @@ RUN apt-get install -y libmemcached-dev libmemcached11 \
     && ./configure \
     && make \
     && make install \
-    && docker-php-ext-enable memcached \
-    && echo "extension=memcached.so" > /usr/local/etc/php/conf.d/memcached.ini
+    && docker-php-ext-enable memcached
 
 RUN apt-get install -y libxml2-dev \
-    && docker-php-ext-install xmlrpc \
-    && echo "extension=xmlrpc.so" > /usr/local/etc/php/conf.d/xmlrpc.ini
+    && docker-php-ext-install xmlrpc
 
 RUN cd /tmp \
     && wget https://github.com/phpredis/phpredis/archive/php7.zip -O phpredis.zip \
@@ -54,7 +52,6 @@ RUN cd /tmp \
     && ./configure \
     && make \
     && make install \
-    && docker-php-ext-enable redis \
-    && echo "extension=redis.so" > /usr/local/etc/php/conf.d/redis.ini
+    && docker-php-ext-enable phpredis
 
 ENTRYPOINT usermod -u $UID www-data && php-fpm -F
