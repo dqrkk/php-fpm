@@ -5,6 +5,7 @@ ENV DEBIAN_FRONTEND noninteractive
 
 ENV ENABLE_BASE 1
 ENV ENABLE_MBSTRING 1
+ENV ENABLE_BCMATH 1
 ENV ENABLE_MEMCACHED 1
 ENV ENBALE_XMLRPC 1
 ENV ENABLE_REDIS 1
@@ -27,6 +28,9 @@ RUN if [ $ENABLE_BASE -eq 1 ]; then \
     
 RUN if [ $ENABLE_MBSTRING -eq 1 ]; then \
     docker-php-ext-install mbstring; fi
+  
+RUN if [ $ENABLE_BCMATH -eq 1 ]; then \
+    docker-php-ext-install bcmath; fi
 
 RUN if [ $ENABLE_MEMCACHED -eq 1 -o $ENABLE_REDIS -eq 1 ]; then \
     apt-get -y install git vim gcc zip unzip wget; fi
