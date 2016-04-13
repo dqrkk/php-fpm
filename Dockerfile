@@ -25,11 +25,14 @@ RUN if [ $ENABLE_BASE -eq 1 ]; then \
     && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
     && docker-php-ext-install -j$(nproc) gd; fi
     
-RUN docker-php-ext-install mbstring
+RUN if [ $ENABLE_MBSTRING -eq 1 ]; then \
+    docker-php-ext-install mbstring; fi
 
-RUN apt-get -y install git vim gcc zip unzip wget
+RUN if [ $ENABLE_MEMCACHED -eq 1 -o $ENABLE_REDIS -e 1 ]; then \
+    apt-get -y install git vim gcc zip unzip wget; fi
 
-RUN apt-get install -y libmemcached-dev libmemcached11 \
+RUN if [ $ENABLE_MEMCACHED -eq 1 ]; then \
+    apt-get install -y libmemcached-dev libmemcached11 \
     && cd /tmp \
     && git clone https://github.com/php-memcached-dev/php-memcached \
     && cd php-memcached \
@@ -38,12 +41,14 @@ RUN apt-get install -y libmemcached-dev libmemcached11 \
     && ./configure \
     && make \
     && make install \
-    && docker-php-ext-enable memcached
+    && docker-php-ext-enable memcached; fi
 
-RUN apt-get install -y libxml2-dev \
-    && docker-php-ext-install xmlrpc
+RUN if [ $ENBALE_XMLRPC -eq 1 ]; then \
+    apt-get install -y libxml2-dev \
+    && docker-php-ext-install xmlrpc; fi
 
-RUN cd /tmp \
+RUN if [ $ENABLE_REDIS -eq 1 ]; then \
+    cd /usr/src/php/ext \
     && wget https://github.com/phpredis/phpredis/archive/php7.zip -O phpredis.zip \
     && unzip -o phpredis.zip \
     && mv phpredis-* phpredis \
@@ -52,6 +57,6 @@ RUN cd /tmp \
     && ./configure \
     && make \
     && make install \
-    && docker-php-ext-install phpredis
+    && docker-php-ext-install phpredis; fi
 
 ENTRYPOINT usermod -u $UID www-data && php-fpm -F
