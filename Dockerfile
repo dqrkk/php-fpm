@@ -58,6 +58,7 @@ RUN if [ $ENABLE_REDIS -eq 1 ]; then \
     && make \
     && make install \
     && docker-php-ext-install phpredis \
-    && docker-php-ext-enable redis; fi
+    && docker-php-ext-enable redis \
+    && echo 'extension=redis.so' > /usr/local/etc/php/conf.d/docker-php-ext-redis.ini; fi
 
 ENTRYPOINT usermod -u $UID www-data && php-fpm -F
