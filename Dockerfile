@@ -21,7 +21,7 @@ RUN apt-get install -y \
     && docker-php-ext-install -j$(nproc) gd
 
 WORKDIR /tmp
-RUN apt-get install libmemcached-dev libmemcached11 \
+RUN apt-get install -y libmemcached-dev libmemcached11 \
     && git clone https://github.com/php-memcached-dev/php-memcached
 WORKDIR /tmp/php-memcached
 RUN git checkout -b php7 origin/php7 \
