@@ -44,7 +44,7 @@ RUN cd /tmp \
     && phpize \
     && ./configure \
     && make \
-    && make install
+    && make install \
     && docker-php-ext-enable phpredis
 
 ENTRYPOINT usermod -u $UID www-data && php-fpm -F
