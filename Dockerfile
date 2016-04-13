@@ -20,6 +20,10 @@ RUN apt-get install -y \
     && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
     && docker-php-ext-install -j$(nproc) gd
 
+RUN apt-get -y install git vim gcc
+
+RUN apt-get -y install zip unzip
+
 WORKDIR /tmp
 RUN apt-get install -y libmemcached-dev libmemcached11 \
     && git clone https://github.com/php-memcached-dev/php-memcached
