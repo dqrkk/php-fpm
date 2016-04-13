@@ -28,7 +28,7 @@ RUN if [ $ENABLE_BASE -eq 1 ]; then \
 RUN if [ $ENABLE_MBSTRING -eq 1 ]; then \
     docker-php-ext-install mbstring; fi
 
-RUN if [ $ENABLE_MEMCACHED -eq 1 -o $ENABLE_REDIS -e 1 ]; then \
+RUN if [ $ENABLE_MEMCACHED -eq 1 -o $ENABLE_REDIS -eq 1 ]; then \
     apt-get -y install git vim gcc zip unzip wget; fi
 
 RUN if [ $ENABLE_MEMCACHED -eq 1 ]; then \
