@@ -36,9 +36,14 @@ RUN apt-get install -y libmemcached-dev libmemcached11 \
 RUN apt-get install -y libxml2-dev \
     && docker-php-ext-install xmlrpc
 
-ENV PHPREDIS_VERSION=2.2.7
-RUN cd /usr/src/php/ext \
-    && curl -q https://codeload.github.com/phpredis/phpredis/tar.gz/$PHPREDIS_VERSION | tar -xz \
-    && docker-php-ext-install phpredis-$PHPREDIS_VERSION
+RUN cd /tmp \
+    && wget https://github.com/phpredis/phpredis/archive/php7.zip -O phpredis.zip \
+    && unzip -o phpredis.zip \
+    && mv phpredis-* phpredis \
+    && cd phpredis \
+    && phpize \
+    && ./configure \
+    && make \
+    && make install
 
 ENTRYPOINT usermod -u $UID www-data && php-fpm -F
