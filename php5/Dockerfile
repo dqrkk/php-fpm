@@ -46,17 +46,14 @@ RUN docker-php-ext-install mbstring
 
 RUN apt-get install -y libmemcached-dev \
     && pecl install memcached \
-    && docker-php-ext-enable memcached \
-    && echo "extension=memcached.so" > /usr/local/etc/php/conf.d/memcached.ini
+    && docker-php-ext-enable memcached
 
 RUN apt-get install -y libxml2-dev \
-    && docker-php-ext-install xmlrpc \
-    && echo "extension=xmlrpc.so" > /usr/local/etc/php/conf.d/xmlrpc.ini
+    && docker-php-ext-install xmlrpc
 
 ENV PHPREDIS_VERSION=2.2.7
 RUN cd /usr/src/php/ext \
     && curl -q https://codeload.github.com/phpredis/phpredis/tar.gz/$PHPREDIS_VERSION | tar -xz \
     && docker-php-ext-install phpredis-$PHPREDIS_VERSION
-    && echo "extension=redis.so" > /usr/local/etc/php/conf.d/redis.ini
 
 ENTRYPOINT usermod -u $UID www-data && php-fpm -F
