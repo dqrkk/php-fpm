@@ -14,7 +14,7 @@ WORKDIR /var/www
 
 RUN apt-get update
 
-RUN if [ $ENABLE_BASE -eq 1 ]; then
+RUN if [ $ENABLE_BASE -eq 1 ]; then \
     apt-get install -y \
         libfreetype6-dev \
         libjpeg62-turbo-dev \
