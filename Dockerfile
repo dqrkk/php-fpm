@@ -25,10 +25,10 @@ RUN apt-get install libmemcached-dev libmemcached11 \
     && git clone https://github.com/php-memcached-dev/php-memcached
 WORKDIR /tmp/php-memcached
 RUN git checkout -b php7 origin/php7 \
-    && /usr/bin/phpize
-    && ./configure
-    && make
-    && make install
+    && /usr/bin/phpize \
+    && ./configure \
+    && make \
+    && make install \
     && docker-php-ext-enable memcached
 
 RUN docker-php-ext-install xmlrpc
