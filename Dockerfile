@@ -45,6 +45,6 @@ RUN cd /tmp \
     && ./configure \
     && make \
     && make install \
-    && docker-php-ext-enable phpredis
+    && docker-php-ext-enable redis
 
 ENTRYPOINT usermod -u $UID www-data && php-fpm -F
