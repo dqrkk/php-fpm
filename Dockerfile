@@ -31,6 +31,8 @@ RUN if [ $ENABLE_MBSTRING -eq 1 ]; then \
   
 RUN if [ $ENABLE_BCMATH -eq 1 ]; then \
     docker-php-ext-install bcmath; fi
+    
+RUN docker-php-ext-install bcmath
 
 RUN if [ $ENABLE_MEMCACHED -eq 1 -o $ENABLE_REDIS -eq 1 ]; then \
     apt-get -y install git vim gcc zip unzip wget; fi
@@ -61,7 +63,7 @@ RUN if [ $ENABLE_REDIS -eq 1 ]; then \
     && ./configure \
     && make \
     && make install \
-    && echo 'extension=redis.so' > /usr/local/etc/php/conf.d/docker-php-ext-redis.ini
+    && echo 'extension=redis.so' > /usr/local/etc/php/conf.d/docker-php-ext-redis.ini \
     && docker-php-ext-install phpredis \
     && docker-php-ext-enable redis; fi
 
