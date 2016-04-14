@@ -24,15 +24,11 @@ RUN if [ $ENABLE_BASE -eq 1 ]; then \
 	--no-install-recommends \
     && docker-php-ext-install -j$(nproc) iconv mcrypt \
     && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
-    && docker-php-ext-install -j$(nproc) gd; fi
+    && docker-php-ext-install -j$(nproc) gd \
+    && docker-php-ext-install bcmath; fi
     
 RUN if [ $ENABLE_MBSTRING -eq 1 ]; then \
     docker-php-ext-install mbstring; fi
-  
-RUN if [ $ENABLE_BCMATH -eq 1 ]; then \
-    docker-php-ext-install bcmath; fi
-    
-RUN docker-php-ext-install bcmath
 
 RUN if [ $ENABLE_MEMCACHED -eq 1 -o $ENABLE_REDIS -eq 1 ]; then \
     apt-get -y install git vim gcc zip unzip wget; fi
