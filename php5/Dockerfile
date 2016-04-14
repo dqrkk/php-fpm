@@ -3,24 +3,33 @@ MAINTAINER DqRkk <romain.gitlab@gmail.com>
 
 ENV DEBIAN_FRONTEND noninteractive
 
-ENV ENABLE_BASE=1
-ENV ENABLE_MEMCACHED=1
-ENV ENBALE_XMLRPC=1
-ENV ENABLE_REDIS=1
+ENV ENABLE_BASE 1
+ENV ENABLE_MBSTRING 1
+ENV ENABLE_BCMATH 1
+ENV ENABLE_MEMCACHED 1
+ENV ENBALE_XMLRPC 1
+ENV ENABLE_REDIS 1
 
 VOLUME /var/www
 WORKDIR /var/www
 
 RUN apt-get update
 
-RUN apt-get install -y \
+RUN if [ $ENABLE_BASE -eq 1 ]; then \
+    apt-get install -y \
         libfreetype6-dev \
         libjpeg62-turbo-dev \
         libmcrypt-dev \
         libpng12-dev \
 	--no-install-recommends \
+    && docker-php-ext-install -j$(nproc) iconv mcrypt \
     && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
-    && docker-php-ext-install -j$(nproc) iconv mcrypt gd mbstring bcmath
+    && docker-php-ext-install -j$(nproc) gd; fi
+    
+RUN docker-php-ext-install mbstring
+
+RUN if [ $ENABLE_BCMATH -eq 1 ]; then \
+    docker-php-ext-install bcmath; fi
 
 RUN apt-get install -y libmemcached-dev \
     && pecl install memcached \
