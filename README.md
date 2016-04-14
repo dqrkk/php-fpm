@@ -5,14 +5,18 @@
 This Docker image supports php5 and php7.
 
 # Supported modules
-- iconv, mcrypt, gd, mbstring, bcmath
+- iconv, mcrypt, gd
+- mbstring
+- bcmath
 - xmlrpc
 - redis
 - memcached
 
 Each one can be excluded using environment variables.
 Example to disable redis set ENABLE_REDIS to 0
-- iconv, mcrypt, gd, mbstring, bcmath -> ENABLE_BASE
+- iconv, mcrypt, gd -> ENABLE_BASE
+- mbstring -> ENABLE_MBSTRING
+- bcmath -> ENABLE_BCMATH
 - xmlrpc -> ENABLE_XMLRPC
 - redis -> ENABLE_REDIS
 - memcached -> ENABLE_MEMCACHED
