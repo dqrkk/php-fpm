@@ -26,21 +26,25 @@ RUN if [ $ENABLE_BASE -eq 1 ]; then \
     && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
     && docker-php-ext-install -j$(nproc) gd; fi
     
-RUN docker-php-ext-install mbstring
+RUN if [ $ENABLE_MBSTRING -eq 1 ]; then \
+    docker-php-ext-install mbstring; fi
 
 RUN if [ $ENABLE_BCMATH -eq 1 ]; then \
     docker-php-ext-install bcmath; fi
 
-RUN apt-get install -y libmemcached-dev \
+RUN if [ $ENABLE_MEMCACHED -eq 1 ]; then \
+    apt-get install -y libmemcached-dev \
     && pecl install memcached \
-    && docker-php-ext-enable memcached
+    && docker-php-ext-enable memcached; fi
 
-RUN apt-get install -y libxml2-dev \
-    && docker-php-ext-install xmlrpc
+RUN if [ $ENBALE_XMLRPC -eq 1 ]; then \
+    apt-get install -y libxml2-dev \
+    && docker-php-ext-install xmlrpc; fi
 
 ENV PHPREDIS_VERSION=2.2.7
-RUN cd /usr/src/php/ext \
+RUN if [ $ENABLE_REDIS -eq 1 ]; then \
+    cd /usr/src/php/ext \
     && curl -q https://codeload.github.com/phpredis/phpredis/tar.gz/$PHPREDIS_VERSION | tar -xz \
-    && docker-php-ext-install phpredis-$PHPREDIS_VERSION
+    && docker-php-ext-install phpredis-$PHPREDIS_VERSION; fi
 
 ENTRYPOINT usermod -u $UID www-data && php-fpm -F
